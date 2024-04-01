@@ -1,51 +1,41 @@
-from typing import List
+from fastapi import Depends, FastAPI, HTTPException
+from sqlalchemy.orm import Session
 
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
+import src.models
+import src.schemas
+from src import crud
+from src.database import SessionLocal, engine
+
+src.models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
 
-# Mock database
-db: List = []
+
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
-class User(BaseModel):
-    name: str
-    user_id: int
+@app.post("/users/", response_model=src.schemas.User)
+def create_user(user: src.schemas.User, db: Session = Depends(get_db)):
+    db_user = crud.get_user_by_name(db, name=user.name)
+    if db_user:
+        raise HTTPException(status_code=400, detail="Name alredy exist.")
+    return crud.create_user(db=db, user=user)
 
 
-@app.get("/users/", response_model=List[User])
-async def read_users():
-    return db
+@app.get("/users/", response_model=list[src.schemas.User])
+def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    users = crud.get_users(db, skip=skip, limit=limit)
+    return users
 
 
-@app.post("/users/", response_model=User)
-async def create_user(user: User):
-    db.append(user)
-    return user
-
-
-@app.get("/users/{user_id}", response_model=User)
-async def read_user(user_id: int):
-    for user in db:
-        if user.user_id == user_id:
-            return user
-    raise HTTPException(status_code=404, detail="User not found")
-
-
-@app.put("/users/{user_id}", response_model=User)
-async def update_user(user_id: int, user: User):
-    for i, u in enumerate(db):
-        if u.user_id == user_id:
-            db[i] = user
-            return user
-    raise HTTPException(status_code=404, detail="User not found")
-
-
-@app.delete("/users/{user_id}", response_model=User)
-async def delete_user(user_id: int):
-    for i, user in enumerate(db):
-        if user.user_id == user_id:
-            deleted_user = db.pop(i)
-            return deleted_user
-    raise HTTPException(status_code=404, detail="User not found")
+@app.get("/users/{user_id}", response_model=src.schemas.User)
+def read_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
