@@ -7,3 +7,5 @@ pytest-cov
 fastapi
 uvicorn
 httpx
+sqlalchemy
+psycopg2-binary 
