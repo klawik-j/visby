@@ -1,24 +1,25 @@
-from sqlalchemy.orm import Session
+from typing import Optional, Sequence
 
-import src.models
-import src.schemas
+from sqlmodel import Session, select
 
-
-def get_user(db: Session, user_id: int):
-    return db.query(src.models.User).filter(src.models.User.user_id == user_id).first()
+from src.models import User, UserCreate
 
 
-def get_users(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(src.models.User).offset(skip).limit(limit).all()
+def get_user_by_name(db: Session, name: str) -> Optional[User]:
+    return db.exec(select(User).where(User.name == name)).first()
 
 
-def get_user_by_name(db: Session, name: str):
-    return db.query(src.models.User).filter(src.models.User.name == name).first()
-
-
-def create_user(db: Session, user: src.schemas.User):
-    db_user = src.models.User(name=user.name)
-    db.add(db_user)
+def create_user(db: Session, user: UserCreate) -> User:
+    user = User.model_validate(user)  # type: ignore
+    db.add(user)
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(user)
+    return user  # type: ignore
+
+
+def get_users(db: Session, skip: int = 0, limit: int = 100) -> Sequence[User]:
+    return db.exec(select(User).offset(skip).limit(limit)).all()
+
+
+def get_user(db: Session, user_id: int) -> Optional[User]:
+    return db.exec(select(User).where(User.user_id == user_id)).first()

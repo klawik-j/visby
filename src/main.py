@@ -1,39 +1,35 @@
+from typing import List
+
 from fastapi import Depends, FastAPI, HTTPException
-from sqlalchemy.orm import Session
+from sqlmodel import Session
 
-import src.models
-import src.schemas
 from src import crud
-from src.database import SessionLocal, engine
+from src.database import create_db_and_tables, engine
+from src.models import UserCreate, UserRead
 
-src.models.Base.metadata.create_all(bind=engine)
-
+create_db_and_tables(engine)
 app = FastAPI()
 
 
 def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+    with Session(engine) as session:
+        yield session
 
 
-@app.post("/users/", response_model=src.schemas.User)
-def create_user(user: src.schemas.User, db: Session = Depends(get_db)):
+@app.post("/users/", response_model=UserRead)
+def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_name(db, name=user.name)
     if db_user:
-        raise HTTPException(status_code=400, detail="Name alredy exist.")
+        raise HTTPException(status_code=400, detail="Name already exists.")
     return crud.create_user(db=db, user=user)
 
 
-@app.get("/users/", response_model=list[src.schemas.User])
+@app.get("/users/", response_model=List[UserRead])
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = crud.get_users(db, skip=skip, limit=limit)
-    return users
+    return crud.get_users(db, skip=skip, limit=limit)
 
 
-@app.get("/users/{user_id}", response_model=src.schemas.User)
+@app.get("/users/{user_id}", response_model=UserRead)
 def read_user(user_id: int, db: Session = Depends(get_db)):
     db_user = crud.get_user(db, user_id=user_id)
     if db_user is None:
