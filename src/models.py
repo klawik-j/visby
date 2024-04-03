@@ -1,10 +1,17 @@
-from sqlalchemy import Column, Integer, String
-
-from src.database import Base
+from sqlmodel import Field, SQLModel
 
 
-class User(Base):
-    __tablename__ = "users"
+class UserBase(SQLModel):
+    name: str
 
-    user_id = Column(Integer, primary_key=True)
-    name = Column(String, unique=True)
+
+class User(UserBase, table=True):
+    user_id: int = Field(default=None, primary_key=True)
+
+
+class UserCreate(UserBase):
+    pass
+
+
+class UserRead(UserBase):
+    user_id: int
