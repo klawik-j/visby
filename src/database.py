@@ -2,7 +2,7 @@ import os
 
 from sqlmodel import SQLModel, create_engine
 
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///./visby.db")
+DATABASE_URL = os.getenv("POSTGRES_DATABASE_URL", "sqlite:///./visby.db")
 
 engine = create_engine(DATABASE_URL)
 
