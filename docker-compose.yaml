@@ -18,7 +18,8 @@ services:
     build: .
     restart: always
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@db:5432/visby
+      - PORT=8000
+      - POSTGRES_DATABASE_URL=postgresql://postgres:postgres@db:5432/visby
     ports:
       - "8000:8000"
     networks:
