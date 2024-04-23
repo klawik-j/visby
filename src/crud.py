@@ -35,7 +35,7 @@ def delete_user(db: Session, user_id: int) -> Optional[User]:
 
 def create_measurement(db: Session, measurement: MeasurementCreate) -> Measurement:
     measurement = Measurement.model_validate(measurement)  # type: ignore
-    measurement.created_at = measurement.created_at.date()
+    measurement.created_at = measurement.created_at.date()  # type: ignore
     db.add(measurement)
     db.commit()
     db.refresh(measurement)

@@ -1,5 +1,4 @@
 from datetime import datetime
-from typing import Optional
 
 from sqlmodel import Field, SQLModel
 
@@ -8,6 +7,7 @@ class MeasurementBase(SQLModel):
     type: str
     value: float
     user_id: int = Field(default=None, foreign_key="user.user_id")
+    created_at: datetime
 
 
 class Measurement(MeasurementBase, table=True):
@@ -16,9 +16,8 @@ class Measurement(MeasurementBase, table=True):
 
 
 class MeasurementCreate(MeasurementBase):
-    created_at: Optional[datetime]
+    pass
 
 
 class MeasurementRead(MeasurementBase):
     measurement_id: int
-    created_at: datetime
