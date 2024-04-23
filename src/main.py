@@ -20,23 +20,21 @@ def get_db():
 
 @app.post("/api/users/", response_model=UserRead)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
-    db_user = crud.get_user_by_name(db, name=user.name)
+    db_user = crud.get_users(db, name=user.name)
     if db_user:
         raise HTTPException(status_code=400, detail="Name already exists.")
     return crud.create_user(db=db, user=user)
 
 
 @app.get("/api/users/", response_model=List[UserRead])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return crud.get_users(db, skip=skip, limit=limit)
-
-
-@app.get("/api/users/{user_id}", response_model=UserRead)
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = crud.get_user(db, user_id=user_id)
-    if db_user is None:
-        raise HTTPException(status_code=404, detail="User not found")
-    return db_user
+def read_users(
+    name: Optional[str] = None,
+    user_id: Optional[int] = None,
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+):
+    return crud.get_users(db, skip=skip, limit=limit, name=name, user_id=user_id)
 
 
 @app.delete("/api/users/{user_id}", response_model=UserRead)
