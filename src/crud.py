@@ -28,13 +28,12 @@ def get_user(db: Session, user_id: int) -> Optional[User]:
 
 def delete_user(db: Session, user_id: int) -> Optional[User]:
     user = db.exec(select(User).where(User.user_id == user_id)).first()
-    # If the measurement exists, delete it
     if user:
         db.delete(user)
-        db.commit()  # Commit the transaction to apply the changes
+        db.commit()
         return user
     else:
-        return None  # Return None if the measurement does not exist
+        return None
 
 
 def create_measurement(db: Session, measurement: MeasurementCreate) -> Measurement:
@@ -63,14 +62,12 @@ def get_measurement(db: Session, measurement_id: int) -> Optional[Measurement]:
 
 
 def delete_measurement(db: Session, measurement_id: int) -> Optional[Measurement]:
-    # Load the measurement object to be deleted
     measurement = db.exec(
         select(Measurement).where(Measurement.measurement_id == measurement_id)
     ).first()
-    # If the measurement exists, delete it
     if measurement:
         db.delete(measurement)
-        db.commit()  # Commit the transaction to apply the changes
+        db.commit()
         return measurement
     else:
-        return None  # Return None if the measurement does not exist
+        return None
