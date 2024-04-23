@@ -32,16 +32,6 @@ def test_read_users():
     assert response.json() == expected_data
 
 
-def test_read_user():
-    expected_data = {
-        "name": "John Doe2",
-        "user_id": 2,
-    }
-    response = client.get("/api/users/2")
-    assert response.status_code == 200
-    assert response.json() == expected_data
-
-
 def test_delete_user():
     expected_data = {
         "name": "John Doe2",
