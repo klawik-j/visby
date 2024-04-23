@@ -1,13 +1,13 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException
-from sqlmodel import Session
 from sqlalchemy.exc import IntegrityError
+from sqlmodel import Session
 
 from src import crud
 from src.database import create_db_and_tables, engine
-from src.user_model import UserCreate, UserRead
 from src.measurement_model import MeasurementCreate, MeasurementRead
+from src.user_model import UserCreate, UserRead
 
 create_db_and_tables(engine)
 app = FastAPI()
@@ -39,6 +39,14 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
     return db_user
 
 
+@app.delete("/api/users/{user_id}", response_model=UserRead)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    db_user = crud.delete_user(db, user_id=user_id)
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    return db_user
+
+
 @app.post("/api/measurements/", response_model=MeasurementRead)
 def create_measurement(measurement: MeasurementCreate, db: Session = Depends(get_db)):
     try:
@@ -48,13 +56,27 @@ def create_measurement(measurement: MeasurementCreate, db: Session = Depends(get
 
 
 @app.get("/api/measurements/", response_model=List[MeasurementRead])
-def read_measurements(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    return crud.get_measurements(db, skip=skip, limit=limit)
+def read_measurements(
+    measurement_id: Optional[int] = None,
+    user_id: Optional[int] = None,
+    type: Optional[str] = None,
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+):
+    return crud.get_measurements(
+        db,
+        skip=skip,
+        limit=limit,
+        measurement_id=measurement_id,
+        user_id=user_id,
+        type=type,
+    )
 
 
-@app.get("/api/measurements/{measurement_id}", response_model=MeasurementRead)
-def read_measurement(measurement_id: int, db: Session = Depends(get_db)):
-    db_measurement = crud.get_measurement(db, measurement_id=measurement_id)
+@app.delete("/api/measurements/{measurement_id}", response_model=MeasurementRead)
+def delete_measurement(measurement_id: int, db: Session = Depends(get_db)):
+    db_measurement = crud.delete_measurement(db, measurement_id=measurement_id)
     if db_measurement is None:
         raise HTTPException(status_code=404, detail="Measurement not found")
     return db_measurement
