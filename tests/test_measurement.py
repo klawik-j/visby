@@ -19,7 +19,7 @@ def test_create_measurement():
         "type": "weight",
         "value": 10.0,
         "user_id": 1,
-        "created_at": "2024-04-14T19:04:04.454000",
+        "created_at": "2024-04-14T00:00:00",
         "measurement_id": 1,
     }
     response = client.post("/api/measurements/", json=data)
@@ -40,7 +40,7 @@ def test_read_measurements():
         "type": "weight",
         "value": 10.0,
         "user_id": 1,
-        "created_at": "2024-04-14T19:04:04.454000",
+        "created_at": "2024-04-14T00:00:00",
         "measurement_id": 1,
     }
     response = client.get("/api/measurements/")
@@ -53,7 +53,7 @@ def test_read_measurement():
         "type": "weight",
         "value": 10.0,
         "user_id": 1,
-        "created_at": "2024-04-14T19:04:04.454000",
+        "created_at": "2024-04-14T00:00:00",
         "measurement_id": 1,
     }
     response = client.get("/api/measurements/?measurement_id=1")
@@ -66,7 +66,7 @@ def test_delete_measurement():
         "type": "weight",
         "value": 10.0,
         "user_id": 1,
-        "created_at": "2024-04-14T19:04:04.454000",
+        "created_at": "2024-04-14T00:00:00",
         "measurement_id": 1,
     }
     response = client.delete("/api/measurements/1")
