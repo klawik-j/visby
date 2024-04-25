@@ -1,3 +1,4 @@
+from datetime import timedelta
 from typing import List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException
@@ -5,6 +6,7 @@ from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 
 from src import crud
+from src.activity_model import ActivityCreate, ActivityRead
 from src.database import create_db_and_tables, engine
 from src.measurement_model import MeasurementCreate, MeasurementRead
 from src.user_model import UserCreate, UserRead
@@ -78,3 +80,40 @@ def delete_measurement(measurement_id: int, db: Session = Depends(get_db)):
     if db_measurement is None:
         raise HTTPException(status_code=404, detail="Measurement not found")
     return db_measurement
+
+
+@app.post("/api/activities/", response_model=ActivityRead)
+def create_activity(activity: ActivityCreate, db: Session = Depends(get_db)):
+    try:
+        return crud.create_activity(db=db, activity=activity)
+    except IntegrityError:
+        raise HTTPException(status_code=404, detail="User does not exist")
+
+
+@app.get("/api/activities/", response_model=List[ActivityRead])
+def read_activities(
+    activity_id: Optional[int] = None,
+    user_id: Optional[int] = None,
+    type: Optional[str] = None,
+    duration: Optional[timedelta] = None,
+    skip: int = 0,
+    limit: int = 100,
+    db: Session = Depends(get_db),
+):
+    return crud.get_activities(
+        db,
+        skip=skip,
+        limit=limit,
+        activity_id=activity_id,
+        user_id=user_id,
+        type=type,
+        duration=duration,
+    )
+
+
+@app.delete("/api/activities/{activity_id}", response_model=ActivityRead)
+def delete_activity(activity_id: int, db: Session = Depends(get_db)):
+    db_activity = crud.delete_activity(db, activity_id=activity_id)
+    if db_activity is None:
+        raise HTTPException(status_code=404, detail="Activity not found")
+    return db_activity
