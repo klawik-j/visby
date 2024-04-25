@@ -18,8 +18,8 @@ def test_create_activity():
     }
     response_data = {
         "type": "running",
-        "value": 5,
-        "duration": "PT1800S",
+        "value": 5.0,
+        "duration": "PT30M",
         "user_id": 1,
         "created_at": "2024-04-25T00:00:00",
         "activity_id": 1,
@@ -40,8 +40,8 @@ def test_create_activity_empty_created_at():
 def test_read_activities():
     expected_data = {
         "type": "running",
-        "value": 5,
-        "duration": "PT1800S",
+        "value": 5.0,
+        "duration": "PT30M",
         "user_id": 1,
         "created_at": "2024-04-25T00:00:00",
         "activity_id": 1,
@@ -54,8 +54,8 @@ def test_read_activities():
 def test_read_activity():
     expected_data = {
         "type": "running",
-        "value": 5,
-        "duration": "PT1800S",
+        "value": 5.0,
+        "duration": "PT30M",
         "user_id": 1,
         "created_at": "2024-04-25T00:00:00",
         "activity_id": 1,
@@ -68,8 +68,8 @@ def test_read_activity():
 def test_delete_activity():
     expected_data = {
         "type": "running",
-        "value": 5,
-        "duration": "PT1800S",
+        "value": 5.0,
+        "duration": "PT30M",
         "user_id": 1,
         "created_at": "2024-04-25T00:00:00",
         "activity_id": 1,
