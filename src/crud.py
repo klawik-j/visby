@@ -2,6 +2,7 @@ from typing import Optional, Sequence
 
 from sqlmodel import Session, select
 
+from src.activity_model import Activity, ActivityCreate
 from src.measurement_model import Measurement, MeasurementCreate
 from src.user_model import User, UserCreate
 
@@ -53,12 +54,6 @@ def get_measurements(
     ).all()
 
 
-def get_measurement(db: Session, measurement_id: int) -> Optional[Measurement]:
-    return db.exec(
-        select(Measurement).where(Measurement.measurement_id == measurement_id)
-    ).first()
-
-
 def delete_measurement(db: Session, measurement_id: int) -> Optional[Measurement]:
     measurement = db.exec(
         select(Measurement).where(Measurement.measurement_id == measurement_id)
@@ -67,5 +62,37 @@ def delete_measurement(db: Session, measurement_id: int) -> Optional[Measurement
         db.delete(measurement)
         db.commit()
         return measurement
+    else:
+        return None
+
+
+def create_activity(db: Session, activity: ActivityCreate) -> Activity:
+    activity = Activity.model_validate(activity)  # type: ignore
+    activity.created_at = activity.created_at.date()  # type: ignore
+    db.add(activity)
+    db.commit()
+    db.refresh(activity)
+    return activity  # type: ignore
+
+
+def get_activities(
+    db: Session, skip: int = 0, limit: int = 100, **kwargs
+) -> Sequence[Activity]:
+    return db.exec(
+        select(Activity)
+        .offset(skip)
+        .limit(limit)
+        .filter_by(**{key: value for key, value in kwargs.items() if value is not None})
+    ).all()
+
+
+def delete_activity(db: Session, activity_id: int) -> Optional[Activity]:
+    activity = db.exec(
+        select(Activity).where(Activity.activity_id == activity_id)
+    ).first()
+    if activity:
+        db.delete(activity)
+        db.commit()
+        return activity
     else:
         return None

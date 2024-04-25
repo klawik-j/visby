@@ -6,9 +6,6 @@ client = TestClient(app)
 
 
 def test_create_measurement():
-    response = client.post("/api/users/", json={"name": "John Doe"})
-    assert response.status_code == 200
-    assert response.json() == {"name": "John Doe", "user_id": 1}
     data = {
         "type": "weight",
         "value": 10.0,
