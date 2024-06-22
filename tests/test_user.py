@@ -1,11 +1,11 @@
 from fastapi.testclient import TestClient
 
-from src.main import app
+from visby.main import app
 
 client = TestClient(app)
 
 
-def test_create_user():
+def test_create_user() -> None:
     user_data = {"name": "John Doe2"}
     expected_data = {
         "name": "John Doe2",
@@ -16,7 +16,7 @@ def test_create_user():
     assert response.json() == expected_data
 
 
-def test_read_users():
+def test_read_users() -> None:
     expected_data = [
         {
             "name": "John Doe",
@@ -32,7 +32,7 @@ def test_read_users():
     assert response.json() == expected_data
 
 
-def test_delete_user():
+def test_delete_user() -> None:
     expected_data = {
         "name": "John Doe2",
         "user_id": 2,

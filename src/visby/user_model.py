@@ -5,7 +5,7 @@ class UserBase(SQLModel):
     name: str
 
 
-class User(UserBase, table=True):
+class User(UserBase, table=True):  # type: ignore
     user_id: int = Field(default=None, primary_key=True)
 
 
