@@ -10,7 +10,7 @@ class MeasurementBase(SQLModel):
     created_at: datetime
 
 
-class Measurement(MeasurementBase, table=True):
+class Measurement(MeasurementBase, table=True):  # type: ignore
     created_at: datetime = Field(default_factory=datetime.now, nullable=False)
     measurement_id: int = Field(default=None, primary_key=True)
 

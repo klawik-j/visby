@@ -1,11 +1,11 @@
 from fastapi.testclient import TestClient
 
-from src.main import app
+from visby.main import app
 
 client = TestClient(app)
 
 
-def test_create_measurement():
+def test_create_measurement() -> None:
     data = {
         "type": "weight",
         "value": 10.0,
@@ -24,15 +24,15 @@ def test_create_measurement():
     assert response.json() == response_data
 
 
-def test_create_measurement_non_existing_user_id():
+def test_create_measurement_non_existing_user_id() -> None:
     pass
 
 
-def test_create_measurement_empty_created_at():
+def test_create_measurement_empty_created_at() -> None:
     pass
 
 
-def test_read_measurements():
+def test_read_measurements() -> None:
     expected_data = {
         "type": "weight",
         "value": 10.0,
@@ -45,7 +45,7 @@ def test_read_measurements():
     assert response.json() == [expected_data]
 
 
-def test_read_measurement():
+def test_read_measurement() -> None:
     expected_data = {
         "type": "weight",
         "value": 10.0,
@@ -58,7 +58,7 @@ def test_read_measurement():
     assert response.json() == [expected_data]
 
 
-def test_delete_measurement():
+def test_delete_measurement() -> None:
     expected_data = {
         "type": "weight",
         "value": 10.0,

@@ -1,11 +1,11 @@
 from fastapi.testclient import TestClient
 
-from src.main import app
+from visby.main import app
 
 client = TestClient(app)
 
 
-def test_create_activity():
+def test_create_activity() -> None:
     response = client.post("/api/users/", json={"name": "John Doe"})
     assert response.status_code == 200
     assert response.json() == {"name": "John Doe", "user_id": 1}
@@ -29,15 +29,15 @@ def test_create_activity():
     assert response.json() == response_data
 
 
-def test_create_activity_non_existing_user_id():
+def test_create_activity_non_existing_user_id() -> None:
     pass
 
 
-def test_create_activity_empty_created_at():
+def test_create_activity_empty_created_at() -> None:
     pass
 
 
-def test_read_activities():
+def test_read_activities() -> None:
     expected_data = {
         "type": "running",
         "value": 5.0,
@@ -51,7 +51,7 @@ def test_read_activities():
     assert response.json() == [expected_data]
 
 
-def test_read_activity():
+def test_read_activity() -> None:
     expected_data = {
         "type": "running",
         "value": 5.0,
@@ -65,7 +65,7 @@ def test_read_activity():
     assert response.json() == [expected_data]
 
 
-def test_delete_activity():
+def test_delete_activity() -> None:
     expected_data = {
         "type": "running",
         "value": 5.0,

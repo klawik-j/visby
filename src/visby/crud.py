@@ -1,10 +1,10 @@
-from typing import Optional, Sequence
+from typing import Any, Optional, Sequence
 
 from sqlmodel import Session, select
 
-from src.activity_model import Activity, ActivityCreate
-from src.measurement_model import Measurement, MeasurementCreate
-from src.user_model import User, UserCreate
+from visby.activity_model import Activity, ActivityCreate
+from visby.measurement_model import Measurement, MeasurementCreate
+from visby.user_model import User, UserCreate
 
 
 def create_user(db: Session, user: UserCreate) -> User:
@@ -15,7 +15,9 @@ def create_user(db: Session, user: UserCreate) -> User:
     return user  # type: ignore
 
 
-def get_users(db: Session, skip: int = 0, limit: int = 100, **kwargs) -> Sequence[User]:
+def get_users(
+    db: Session, skip: int = 0, limit: int = 100, **kwargs: Any
+) -> Sequence[User]:
     return db.exec(
         select(User)
         .offset(skip)
@@ -44,7 +46,7 @@ def create_measurement(db: Session, measurement: MeasurementCreate) -> Measureme
 
 
 def get_measurements(
-    db: Session, skip: int = 0, limit: int = 100, **kwargs
+    db: Session, skip: int = 0, limit: int = 100, **kwargs: Any
 ) -> Sequence[Measurement]:
     return db.exec(
         select(Measurement)
@@ -76,7 +78,7 @@ def create_activity(db: Session, activity: ActivityCreate) -> Activity:
 
 
 def get_activities(
-    db: Session, skip: int = 0, limit: int = 100, **kwargs
+    db: Session, skip: int = 0, limit: int = 100, **kwargs: Any
 ) -> Sequence[Activity]:
     return db.exec(
         select(Activity)

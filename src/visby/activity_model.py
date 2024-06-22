@@ -11,7 +11,7 @@ class ActivityBase(SQLModel):
     created_at: datetime
 
 
-class Activity(ActivityBase, table=True):
+class Activity(ActivityBase, table=True):  # type: ignore
     created_at: datetime = Field(default_factory=datetime.now, nullable=False)
     activity_id: int = Field(default=None, primary_key=True)
 
