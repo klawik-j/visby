@@ -8,4 +8,4 @@ RUN pip install --no-cache-dir -r requirements-dev.txt
 
 COPY . .
 
-CMD uvicorn src.main:app --host 0.0.0.0 --port $PORT
+CMD uvicorn src.visby.main:app --host 0.0.0.0 --port $PORT
