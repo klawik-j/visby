@@ -2,15 +2,24 @@ name: CD
 
 on:
   push:
-    branches: [main]
-    paths:
-      - 'src/**'
-      - 'Dockerfile'
-      - 'requirements-dev.txt'
-      - '.github/workflows/cd.yml'
+    tags:
+      - v*
 
 jobs:
-  deploy  :
+  deploy-pypi:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build package
+        run: ./scripts/build_package.sh
+      - name: Deploy package
+        env:
+          TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
+          TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+        run: |
+          chmod +x ./scripts/upload_package.sh
+          ./scripts/upload_package.sh
+  deploy-prod:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
