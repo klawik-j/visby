@@ -10,6 +10,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Prepare environment
+        run: |
+          python -m pip install tox
+          tox devenv venv
+          source venv/bin/activate
+          chmod +x ./scripts/*
       - name: Release package pypi & docker hub
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
@@ -17,7 +23,6 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          chmod +x ./scripts/*
           ./scripts/run_a_release.sh
   deploy-prod:
     runs-on: ubuntu-latest
