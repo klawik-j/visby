@@ -15,7 +15,9 @@ services:
       - visby-network
 
   visby-app:
-    build: .
+    build:
+      context: .
+      dockerfile: docker/dev.dockerfile
     restart: always
     environment:
       - PORT=8000
