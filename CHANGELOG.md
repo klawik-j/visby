@@ -5,6 +5,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## [Unreleased]
 
+## [0.2.1] - 2024-06-24
+### Fixed
+- `No module named build` when running scripts/build_package.sh
+
 ## [0.2.0] - 2024-06-24
 ### Added
 - scripts to automate package management.
