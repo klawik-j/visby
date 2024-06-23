@@ -6,19 +6,19 @@ on:
       - v*
 
 jobs:
-  deploy-pypi:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Build package
-        run: ./scripts/build_package.sh
-      - name: Deploy package
+      - name: Release package pypi & docker hub
         env:
           TWINE_USERNAME: ${{ secrets.TWINE_USERNAME }}
           TWINE_PASSWORD: ${{ secrets.TWINE_PASSWORD }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          chmod +x ./scripts/upload_package.sh
-          ./scripts/upload_package.sh
+          chmod +x ./scripts/*
+          ./scripts/run_a_release.sh
   deploy-prod:
     runs-on: ubuntu-latest
     steps:
