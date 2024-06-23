@@ -9,3 +9,4 @@ pytest-cov
 pydocstyle
 toml
 pip-tools>=7.0.0
+twine
