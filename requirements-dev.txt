@@ -4,6 +4,8 @@
 #
 #    pip-compile requirements-dev.in
 #
+alembic==1.13.3
+    # via -r requirements.txt
 annotated-types==0.7.0
     # via
     #   -r requirements.txt
@@ -91,8 +93,16 @@ jeepney==0.8.0
     #   secretstorage
 keyring==25.2.1
     # via twine
+mako==1.3.10
+    # via
+    #   -r requirements.txt
+    #   alembic
 markdown-it-py==3.0.0
     # via rich
+markupsafe==3.0.2
+    # via
+    #   -r requirements.txt
+    #   mako
 mccabe==0.7.0
     # via flake8
 mdurl==0.1.2
@@ -181,6 +191,7 @@ snowballstemmer==2.2.0
 sqlalchemy==2.0.29
     # via
     #   -r requirements.txt
+    #   alembic
     #   sqlmodel
 sqlmodel==0.0.16
     # via -r requirements.txt
@@ -203,6 +214,7 @@ twine==5.1.0
 typing-extensions==4.12.2
     # via
     #   -r requirements.txt
+    #   alembic
     #   anyio
     #   black
     #   fastapi

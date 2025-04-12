@@ -7,13 +7,12 @@ from sqlmodel import Session
 
 import visby.crud as crud
 from visby.activity_model import Activity, ActivityCreate, ActivityRead
-from visby.database import create_db_and_tables, engine
+from visby.database import db
 from visby.measurement_model import Measurement, MeasurementCreate, MeasurementRead
 from visby.user_model import User, UserCreate, UserRead
 
-create_db_and_tables(engine)
 app = FastAPI()
-
+engine = db.engine
 
 def get_db() -> Any:
     with Session(engine) as session:

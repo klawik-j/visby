@@ -2,8 +2,7 @@ services:
   db:
     image: postgres:12
     restart: always
-    volumes:
-      - db-data:/var/lib/postgresql/data/pgdata
+    container_name: db
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
       - POSTGRES_PASSWORD=postgres
@@ -13,6 +12,21 @@ services:
       - POSTGRES_PORT=5432
     networks:
       - visby-network
+    healthcheck:
+      test: pg_isready -d $$POSTGRES_DB -U $$POSTGRES_USER
+  
+  db-init:
+    build:
+      context: .
+      dockerfile: ./docker/ci.dockerfile
+    command: alembic upgrade head
+    environment:
+      - VISBY_DATABASE_URL=postgresql://postgres:postgres@db:5432/visby
+    networks:
+      - visby-network
+    depends_on:
+      db:
+        condition: service_healthy
 
   visby-app:
     build:
