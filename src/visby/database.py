@@ -1,11 +1,51 @@
 import os
-from typing import Optional
 from pathlib import Path
+from typing import Optional
 
-from sqlalchemy import MetaData, create_engine
+from sqlalchemy import (
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    Interval,
+    MetaData,
+    String,
+    Table,
+    create_engine,
+)
 from sqlalchemy.engine import Engine
 
 metadata_obj = MetaData()
+
+
+activity_table = Table(
+    "activity",
+    metadata_obj,
+    Column("activity_id", Integer, primary_key=True),
+    Column("type", String, nullable=False),
+    Column("value", Float, nullable=False),
+    Column("duration", Interval, nullable=False),
+    Column("user_id", Integer, ForeignKey("user.user_id"), nullable=True),
+    Column("created_at", DateTime, nullable=False),
+)
+
+user_table = Table(
+    "user",
+    metadata_obj,
+    Column("user_id", Integer, primary_key=True),
+    Column("name", String, nullable=False),
+)
+
+measurement_table = Table(
+    "measurement",
+    metadata_obj,
+    Column("measurement_id", Integer, primary_key=True),
+    Column("type", String, nullable=False),
+    Column("value", Float, nullable=False),
+    Column("user_id", Integer, ForeignKey("user.user_id"), nullable=True),
+    Column("created_at", DateTime, nullable=False),
+)
 
 
 class DatabaseHandler:

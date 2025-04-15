@@ -14,6 +14,7 @@ from visby.user_model import User, UserCreate, UserRead
 app = FastAPI()
 engine = db.engine
 
+
 def get_db() -> Any:
     with Session(engine) as session:
         yield session
