@@ -7,6 +7,6 @@ ENV PYTHONPATH=/src/
 COPY requirements-dev.txt .
 RUN pip install --no-cache-dir -r requirements-dev.txt
 
-COPY . .
+COPY src/ /src
 
-CMD uvicorn src.visby.main:app --host 0.0.0.0 --port $PORT
+CMD uvicorn src.visby.main:app --host 0.0.0.0 --port $PORT --reload --reload-dir /src

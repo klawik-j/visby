@@ -20,7 +20,7 @@ def in_memory_database() -> Generator:
 @pytest.fixture
 def local_database() -> Generator:
     db.init_url(os.environ["VISBY_DATABASE_URL"])
-    # alembic.command.upgrade(alembic.config.Config(alembic_config_path), "head")
+    alembic.command.upgrade(alembic.config.Config(alembic_config_path), "head")
     yield
     with db.engine.begin() as conn:
         for table in reversed(db.metadata.sorted_tables):
