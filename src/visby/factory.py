@@ -1,3 +1,6 @@
+from datetime import datetime, timedelta
+
+
 def user_factory(
     user_id: int = 1,
     name: str = "John Doe",
@@ -12,9 +15,9 @@ def activity_factory(
     activity_id: int = 1,
     type: str = "running",
     value: float = 42.0,
-    duration: str = "00:30:00",  # can also be a timedelta if needed
+    duration: timedelta = timedelta(minutes=30),  # can also be a timedelta if needed
     user_id: int = 1,
-    created_at: str = "2024-01-01T12:00:00",
+    created_at: datetime = datetime(2024, 1, 1, 0, 0),
 ) -> dict:
     return {
         "activity_id": activity_id,
@@ -31,7 +34,7 @@ def measurement_factory(
     type: str = "weight",
     value: float = 70.5,
     user_id: int = 1,
-    created_at: str = "2024-01-01T12:00:00",
+    created_at: datetime = datetime(2024, 1, 1, 0, 0),
 ) -> dict:
     return {
         "measurement_id": measurement_id,

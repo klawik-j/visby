@@ -229,6 +229,8 @@ urllib3==2.2.2
     #   twine
 uvicorn==0.29.0
     # via -r requirements.txt
+watchgod==0.7
+    # via -r requirements-dev.in
 wheel==0.43.0
     # via pip-tools
 zipp==3.19.2

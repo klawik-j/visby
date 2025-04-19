@@ -1,7 +1,7 @@
 """Create user table.
 
 Revision ID: 8ee708b63a6e
-Revises: 
+Revises:
 Create Date: 2025-04-12 22:38:09.270307
 
 """
@@ -18,7 +18,7 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 
-def upgrade():
+def upgrade() -> None:
     op.create_table(
         "user",
         sa.Column("name", sa.String(), nullable=False),
@@ -26,5 +26,5 @@ def upgrade():
     )
 
 
-def downgrade():
+def downgrade() -> None:
     op.drop_table("user")
