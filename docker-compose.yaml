@@ -42,6 +42,8 @@ services:
       - "8000:8000"
     networks:
       - visby-network
+    volumes:
+      - ./src:/src
 
 volumes:
   db-data:
