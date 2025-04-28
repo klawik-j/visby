@@ -5,13 +5,13 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
         py:
         - "3.10"
         os:
-        - ubuntu-latest
+        - ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v2
