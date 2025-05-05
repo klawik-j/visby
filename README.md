@@ -9,11 +9,12 @@ A lightweight web application designed for collecting and visualizing biometric 
 - [x] [Superset](https://github.com/apache/superset) data visualization
 - [x] CI/CD flow
 - [x] ~~GCP~~ Heroku deployment
-- [ ] Tests: unit, integration, e2e
+- [x] Tests: unit, integration, e2e
 
 ### Long term goals
 - [x] Web UI using ~~Node.js~~ [Dash](https://dash.plotly.com/)
 - [ ] ~~Android app in Flutter~~
+- [ ] Model Context Protocol
 
 ## Instalation
 ```
